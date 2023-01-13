@@ -16,6 +16,7 @@ namespace Paridot
 
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private GameObject feet;
+        [SerializeField] private float maxRaycastDistance;
 
         private Rigidbody _rb;
         
@@ -53,6 +54,7 @@ namespace Paridot
 
         private void HandleJump()
         {
+            print(IsGrounded());
             if (!IsGrounded())
             {
                 return;
@@ -79,7 +81,7 @@ namespace Paridot
         private bool IsGrounded()
         {
             // return Physics.CheckSphere(transform.position, 1.1f, (int)groundLayer);
-            return Physics.Raycast(feet.transform.position, Vector3.down, 0.1f, groundLayer);
+            return Physics.Raycast(feet.transform.position, Vector3.down, maxRaycastDistance, groundLayer);
         }
 
         private void Jump()

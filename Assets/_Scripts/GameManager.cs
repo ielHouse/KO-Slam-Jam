@@ -10,7 +10,7 @@ namespace Paridot
         [SerializeField] private InputReader _input;
 
         [SerializeField] private float _transitionTime;
-        private float _transioning = 0f;
+        private float _transitioning = 0f;
         private bool _isTransitioning = false;
 
         private GameState _gameState;
@@ -28,9 +28,9 @@ namespace Paridot
         {
             if (_isTransitioning)
             {
-                if (_transioning <= _transitionTime)
+                if (_transitioning <= _transitionTime)
                 {
-                    _transioning += Time.deltaTime;
+                    _transitioning += Time.deltaTime;
                 }
                 else
                 {
@@ -45,7 +45,7 @@ namespace Paridot
             {
                 _isTransitioning = true;
                 _gameState = 1 - _gameState;
-                _transioning = 0f;
+                _transitioning = 0f;
                 TransitionGameEvent?.Invoke(_gameState, _transitionTime);
             }
         }
