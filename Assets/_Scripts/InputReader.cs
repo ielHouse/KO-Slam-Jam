@@ -14,6 +14,7 @@ namespace Paridot
         public event Action<Vector2> MoveEvent;
         public event Action JumpEvent;
         public event Action JumpCancelledEvent;
+        public event Action TransitionEvent;
 
         private void OnEnable()
         {
@@ -47,6 +48,14 @@ namespace Paridot
             if (context.phase == InputActionPhase.Canceled)
             {
                 JumpCancelledEvent?.Invoke();
+            }
+        }
+
+        public void OnTransition(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+            {
+                TransitionEvent?.Invoke();
             }
         }
     }
