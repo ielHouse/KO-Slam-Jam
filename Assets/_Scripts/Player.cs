@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Paridot
 {
-    public class Player : MonoBehaviour
+    public class Player : TransitionObject
     {
         [SerializeField] private InputReader _input;
 
@@ -15,6 +15,7 @@ namespace Paridot
         [SerializeField] private float jumpTimeLimit;
 
         [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private GameObject feet;
 
         private Rigidbody _rb;
         
@@ -24,6 +25,7 @@ namespace Paridot
 
         private void Start()
         {
+            base.Start();
             _rb = GetComponent<Rigidbody>();
             
             _input.MoveEvent += HandleMove;
@@ -39,7 +41,14 @@ namespace Paridot
 
         private void HandleMove(Vector2 dir)
         {
-            _moveDirection = new Vector3(dir.x, 0, dir.y);
+            if (_gameState == GameState.Perspective)
+            {
+                _moveDirection = new Vector3(dir.y, 0, -dir.x);
+            }
+            else
+            {
+                _moveDirection = new Vector3(dir.x, 0, 0);
+            }
         }
 
         private void HandleJump()
@@ -69,7 +78,8 @@ namespace Paridot
 
         private bool IsGrounded()
         {
-            return Physics.CheckSphere(transform.position, 1.1f, (int)groundLayer);
+            // return Physics.CheckSphere(transform.position, 1.1f, (int)groundLayer);
+            return Physics.Raycast(feet.transform.position, Vector3.down, 0.1f, groundLayer);
         }
 
         private void Jump()

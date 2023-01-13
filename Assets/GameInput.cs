@@ -46,6 +46,15 @@ namespace Paridot
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Transition"",
+                    ""type"": ""Button"",
+                    ""id"": ""8d5727a5-e6d3-4fdd-bad2-39aedc8e64f9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -136,6 +145,28 @@ namespace Paridot
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f8479d2-1933-427a-896a-202d4a9fadb8"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Transition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59526c98-9d94-4d3e-af18-cf3627ad9876"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Transition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -146,6 +177,7 @@ namespace Paridot
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+            m_Gameplay_Transition = m_Gameplay.FindAction("Transition", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -207,12 +239,14 @@ namespace Paridot
         private IGameplayActions m_GameplayActionsCallbackInterface;
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_Jump;
+        private readonly InputAction m_Gameplay_Transition;
         public struct GameplayActions
         {
             private @GameInput m_Wrapper;
             public GameplayActions(@GameInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+            public InputAction @Transition => m_Wrapper.m_Gameplay_Transition;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -228,6 +262,9 @@ namespace Paridot
                     @Jump.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
                     @Jump.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
                     @Jump.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                    @Transition.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTransition;
+                    @Transition.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTransition;
+                    @Transition.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTransition;
                 }
                 m_Wrapper.m_GameplayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -238,6 +275,9 @@ namespace Paridot
                     @Jump.started += instance.OnJump;
                     @Jump.performed += instance.OnJump;
                     @Jump.canceled += instance.OnJump;
+                    @Transition.started += instance.OnTransition;
+                    @Transition.performed += instance.OnTransition;
+                    @Transition.canceled += instance.OnTransition;
                 }
             }
         }
@@ -246,6 +286,7 @@ namespace Paridot
         {
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
+            void OnTransition(InputAction.CallbackContext context);
         }
     }
 }
