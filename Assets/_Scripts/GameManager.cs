@@ -7,6 +7,8 @@ namespace Paridot
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private GameObject player;
+        
         [SerializeField] private InputReader _input;
 
         [SerializeField] private float _transitionTime;
@@ -15,7 +17,7 @@ namespace Paridot
 
         private GameState _gameState;
 
-        public static event Action<GameState, float> TransitionGameEvent;
+        public static event Action<GameState, float, float> TransitionGameEvent;
 
         private void Start()
         {
@@ -30,11 +32,12 @@ namespace Paridot
             {
                 if (_transitioning <= _transitionTime)
                 {
-                    _transitioning += Time.deltaTime;
+                    _transitioning += Time.unscaledDeltaTime;
                 }
                 else
                 {
                     _isTransitioning = false;
+                    Time.timeScale = 1;
                 }
             }
         }
@@ -44,9 +47,10 @@ namespace Paridot
             if (!_isTransitioning)
             {
                 _isTransitioning = true;
+                Time.timeScale = 0;
                 _gameState = 1 - _gameState;
                 _transitioning = 0f;
-                TransitionGameEvent?.Invoke(_gameState, _transitionTime);
+                TransitionGameEvent?.Invoke(_gameState, _transitionTime, player.transform.position.z);
             }
         }
     }

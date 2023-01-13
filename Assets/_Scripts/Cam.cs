@@ -6,6 +6,8 @@ namespace Paridot
 {
     public class Cam : TransitionObject
     {
+        [SerializeField] private Camera cam;
+        
         [SerializeField] private Vector3 perspectiveRotation;
         [SerializeField] private Vector3 sideRotation;
         
@@ -15,10 +17,12 @@ namespace Paridot
             if (_gameState == GameState.Perspective)
             {
                 transform.rotation = Quaternion.Slerp(Quaternion.Euler(sideRotation), Quaternion.Euler(perspectiveRotation), t);
+                cam.orthographic = false;
             }
             else
             {
                 transform.rotation = Quaternion.Slerp(Quaternion.Euler(perspectiveRotation), Quaternion.Euler(sideRotation), t);
+                cam.orthographic = true;
             }
         }
     }

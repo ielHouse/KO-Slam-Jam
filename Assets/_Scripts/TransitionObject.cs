@@ -9,14 +9,17 @@ namespace Paridot
     {
         protected GameState _gameState { get; private set; }
 
+        protected float _z;
+
         protected void Start()
         {
             GameManager.TransitionGameEvent += HandleTransition;
         }
 
-        private void HandleTransition(GameState state, float time)
+        private void HandleTransition(GameState state, float time, float zPos)
         {
             _gameState = state;
+            _z = zPos;
             StartCoroutine(Transition(state, time));
         }
 
