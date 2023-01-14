@@ -7,7 +7,9 @@ namespace Paridot
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private GameObject player;
+        [SerializeField] private GameObject _player;
+        private Vector3 _startPosition;
+        [SerializeField] private float _deathZoneY;
         
         [SerializeField] private InputReader _input;
 
@@ -18,16 +20,26 @@ namespace Paridot
         private GameState _gameState;
 
         public static event Action<GameState, float, float> TransitionGameEvent;
+        public static event Action PlayerDeathEvent;
+        
 
         private void Start()
         {
             _gameState = GameState.Perspective;
 
             _input.TransitionEvent += TransitionState;
+
+            _startPosition = _player.transform.position;
         }
 
         private void Update()
         {
+            if (_player.transform.position.y < _deathZoneY)
+            {
+                PlayerDeathEvent?.Invoke();
+                _player.transform.position = _startPosition;
+            }
+            
             if (_isTransitioning)
             {
                 if (_transitioning <= _transitionTime)
@@ -50,7 +62,7 @@ namespace Paridot
                 Time.timeScale = 0;
                 _gameState = 1 - _gameState;
                 _transitioning = 0f;
-                TransitionGameEvent?.Invoke(_gameState, _transitionTime, player.transform.position.z);
+                TransitionGameEvent?.Invoke(_gameState, _transitionTime, _player.transform.position.z);
             }
         }
     }

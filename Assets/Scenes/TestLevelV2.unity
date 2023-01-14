@@ -6230,7 +6230,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh44510
+  m_Name: pb_Mesh56220
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -29843,6 +29843,18 @@ PrefabInstance:
     - target: {fileID: 1544618877, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
       propertyPath: orthographic
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1544618877, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
+      propertyPath: near clip plane
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1544618877, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
+      propertyPath: orthographic size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1544618878, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3478592826085852215, guid: 3a92a42bf4548484196716270d4b79a7,
         type: 3}
