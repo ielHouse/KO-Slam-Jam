@@ -77,6 +77,7 @@ namespace Paridot
         private void PlayerDeath()
         {
             PlayerDeathEvent?.Invoke();
+            _startPosition.z = _player.transform.position.z;
             _player.transform.position = _startPosition;
         }
 
