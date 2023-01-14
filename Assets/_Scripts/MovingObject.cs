@@ -30,6 +30,7 @@ namespace Paridot
 
         private void Update()
         {
+            _endPosition = _startPosition + _changeVector;
             float t = _elapsedTime / _cycleTime;
             if (forward)
             {
