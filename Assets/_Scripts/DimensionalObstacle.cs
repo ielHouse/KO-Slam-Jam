@@ -20,7 +20,7 @@ namespace Paridot
 
         protected override void PerformTransition(float t)
         {
-            _sidePosition.z = _z;
+            _sidePosition.z = _z - 1;
             base.PerformTransition(t);
             if (_gameState == GameState.Perspective)
             {
