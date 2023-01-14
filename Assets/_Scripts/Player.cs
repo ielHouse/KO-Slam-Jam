@@ -57,7 +57,6 @@ namespace Paridot
 
         private void HandleJump()
         {
-            print(IsGrounded());
             if (!IsGrounded())
             {
                 return;
