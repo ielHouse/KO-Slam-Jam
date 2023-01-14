@@ -55,7 +55,7 @@ namespace Paridot
         private void UpdateTimer()
         {
             _timer -= Time.deltaTime;
-            _timerText.text = (_timer).ToString();
+            _timerText.text = ((int)_timer).ToString();
         }
 
         private void HandleResume()
