@@ -13,6 +13,7 @@ namespace Paridot
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpForce;
         [SerializeField] private float jumpTimeLimit;
+        [SerializeField] [Range(0,1)] private float airMoveScale;
 
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private GameObject feet;
@@ -72,15 +73,18 @@ namespace Paridot
 
         private void Move()
         {
-            if (!IsGrounded())
-            {
-                return;
-            }
             
             Vector3 movement = _moveDirection * (moveSpeed * Time.deltaTime);
-
-            movement.y = _rb.velocity.y;
-            _rb.velocity = movement;
+            
+            if (!IsGrounded())
+            {
+                _rb.AddForce(movement*airMoveScale);
+            }
+            else
+            {
+                movement.y = _rb.velocity.y;
+                _rb.velocity = movement;
+            }
         }
 
         private bool IsGrounded()

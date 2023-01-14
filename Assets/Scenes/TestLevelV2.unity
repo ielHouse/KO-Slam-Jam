@@ -6392,6 +6392,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &821559829 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1424578423}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19850cfbb45a5e4439f21a6897d26118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &827794911
 Mesh:
   m_ObjectHideFlags: 0
@@ -30291,6 +30303,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3478592826085852216, guid: 3a92a42bf4548484196716270d4b79a7,
+        type: 3}
+      propertyPath: airMoveScale
+      value: 0.225
+      objectReference: {fileID: 0}
     - target: {fileID: 3478592826085852221, guid: 3a92a42bf4548484196716270d4b79a7,
         type: 3}
       propertyPath: m_RootOrder
@@ -30471,6 +30488,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 821559829}
+    - target: {fileID: 6262114794945085191, guid: f0f0ffb4232817e4f9ad0056ebc119b7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartGame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
