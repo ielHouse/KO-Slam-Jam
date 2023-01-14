@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19850cfbb45a5e4439f21a6897d26118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _UIGameplay: {fileID: 0}
+  _UIMenu: {fileID: 0}
+  _player: {fileID: 0}
+  _deathZoneY: -10
   _input: {fileID: 11400000, guid: fc77b137a162e7946afc322056934dcf, type: 2}
   _transitionTime: 1
 --- !u!1 &7779810048709968261
@@ -76,5 +80,5 @@ Transform:
   m_Children:
   - {fileID: 7779810048390601711}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

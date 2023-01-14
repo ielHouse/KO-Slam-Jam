@@ -7,6 +7,9 @@ namespace Paridot
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private GameObject _UIGameplay;
+        [SerializeField] private GameObject _UIMenu;
+        
         [SerializeField] private GameObject _player;
         private Vector3 _startPosition;
         [SerializeField] private float _deathZoneY;
@@ -18,7 +21,7 @@ namespace Paridot
         private bool _isTransitioning = false;
 
         private GameState _gameState;
-
+        
         public static event Action<GameState, float, float> TransitionGameEvent;
         public static event Action PlayerDeathEvent;
         
@@ -28,8 +31,26 @@ namespace Paridot
             _gameState = GameState.Perspective;
 
             _input.TransitionEvent += TransitionState;
+            _input.PauseEvent += HandlePause;
+            _input.ResumeEvent += HandleResume;
 
             _startPosition = _player.transform.position;
+        }
+
+        private void HandleResume()
+        {
+            Time.timeScale = 1f;
+
+            _UIGameplay.SetActive(true);
+            _UIMenu.SetActive(false);
+        }
+
+        private void HandlePause()
+        {
+            Time.timeScale = 0f;
+
+            _UIGameplay.SetActive(false);
+            _UIMenu.SetActive(true);
         }
 
         private void Update()

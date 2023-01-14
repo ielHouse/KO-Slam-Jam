@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace Paridot
 {
     [CreateAssetMenu(menuName = "Input Reader")]
-    public class InputReader : ScriptableObject, GameInput.IGameplayActions
+    public class InputReader : ScriptableObject, GameInput.IGameplayActions, GameInput.IMenuActions
     {
         private GameInput _gameInput;
 
@@ -15,6 +15,8 @@ namespace Paridot
         public event Action JumpEvent;
         public event Action JumpCancelledEvent;
         public event Action TransitionEvent;
+        public event Action PauseEvent;
+        public event Action ResumeEvent;
 
         private void OnEnable()
         {
@@ -23,14 +25,17 @@ namespace Paridot
                 _gameInput = new GameInput();
                 
                 _gameInput.Gameplay.SetCallbacks(this);
+                _gameInput.Menu.SetCallbacks(this);
                 
-                _gameInput.Gameplay.Enable();
+                // _gameInput.Gameplay.Enable();
+                _gameInput.Menu.Enable();
             }
         }
 
         private void OnDisable()
         {
             _gameInput.Gameplay.Disable();
+            _gameInput.Menu.Disable();
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -56,6 +61,26 @@ namespace Paridot
             if (context.phase == InputActionPhase.Performed)
             {
                 TransitionEvent?.Invoke();
+            }
+        }
+
+        public void OnPause(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+            {
+                _gameInput.Gameplay.Disable();
+                _gameInput.Menu.Enable();
+                PauseEvent?.Invoke();
+            }
+        }
+
+        public void OnResume(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+            {
+                _gameInput.Menu.Disable();
+                _gameInput.Gameplay.Enable();
+                ResumeEvent?.Invoke();
             }
         }
     }

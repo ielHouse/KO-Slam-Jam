@@ -55,6 +55,15 @@ namespace Paridot
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""891f0551-fb3b-4681-b3df-f7d6c4e837bf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -167,6 +176,67 @@ namespace Paridot
                     ""action"": ""Transition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""63567523-109c-4c50-aa0f-aac34587ec8e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""18babed0-77a0-45b4-999d-983da8d69dca"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Menu"",
+            ""id"": ""264c41d7-ad49-4af1-a1b3-fe4a1ccfe5dd"",
+            ""actions"": [
+                {
+                    ""name"": ""Resume"",
+                    ""type"": ""Button"",
+                    ""id"": ""1ffaaa0f-f1c6-439d-9c84-98fbf40564c1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4fc3c555-1413-488e-bbdc-f5a72a487c15"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Resume"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8264175c-b082-4e53-b7ef-2f812c2c1cd3"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Resume"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -178,6 +248,10 @@ namespace Paridot
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
             m_Gameplay_Transition = m_Gameplay.FindAction("Transition", throwIfNotFound: true);
+            m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+            // Menu
+            m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+            m_Menu_Resume = m_Menu.FindAction("Resume", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -240,6 +314,7 @@ namespace Paridot
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_Jump;
         private readonly InputAction m_Gameplay_Transition;
+        private readonly InputAction m_Gameplay_Pause;
         public struct GameplayActions
         {
             private @GameInput m_Wrapper;
@@ -247,6 +322,7 @@ namespace Paridot
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
             public InputAction @Transition => m_Wrapper.m_Gameplay_Transition;
+            public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -265,6 +341,9 @@ namespace Paridot
                     @Transition.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTransition;
                     @Transition.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTransition;
                     @Transition.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnTransition;
+                    @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                    @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                    @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                 }
                 m_Wrapper.m_GameplayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -278,15 +357,56 @@ namespace Paridot
                     @Transition.started += instance.OnTransition;
                     @Transition.performed += instance.OnTransition;
                     @Transition.canceled += instance.OnTransition;
+                    @Pause.started += instance.OnPause;
+                    @Pause.performed += instance.OnPause;
+                    @Pause.canceled += instance.OnPause;
                 }
             }
         }
         public GameplayActions @Gameplay => new GameplayActions(this);
+
+        // Menu
+        private readonly InputActionMap m_Menu;
+        private IMenuActions m_MenuActionsCallbackInterface;
+        private readonly InputAction m_Menu_Resume;
+        public struct MenuActions
+        {
+            private @GameInput m_Wrapper;
+            public MenuActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Resume => m_Wrapper.m_Menu_Resume;
+            public InputActionMap Get() { return m_Wrapper.m_Menu; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
+            public void SetCallbacks(IMenuActions instance)
+            {
+                if (m_Wrapper.m_MenuActionsCallbackInterface != null)
+                {
+                    @Resume.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnResume;
+                    @Resume.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnResume;
+                    @Resume.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnResume;
+                }
+                m_Wrapper.m_MenuActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Resume.started += instance.OnResume;
+                    @Resume.performed += instance.OnResume;
+                    @Resume.canceled += instance.OnResume;
+                }
+            }
+        }
+        public MenuActions @Menu => new MenuActions(this);
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnTransition(InputAction.CallbackContext context);
+            void OnPause(InputAction.CallbackContext context);
+        }
+        public interface IMenuActions
+        {
+            void OnResume(InputAction.CallbackContext context);
         }
     }
 }

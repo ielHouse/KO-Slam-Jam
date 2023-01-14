@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7675db19be4a76a4c8c9ac6b89409dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
+  cam: {fileID: 1544618877}
   perspectiveRotation: {x: 35, y: 85, z: 0}
   sideRotation: {x: 0, y: 0, z: 0}
 --- !u!1 &1544618875
@@ -109,7 +109,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -232,7 +232,7 @@ Transform:
   - {fileID: 3087614687536615082}
   - {fileID: 4666572205457161919}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0.48, z: 0}
 --- !u!54 &3478592826085852217
 Rigidbody:
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input: {fileID: 11400000, guid: fc77b137a162e7946afc322056934dcf, type: 2}
   moveSpeed: 10
-  jumpForce: 3
+  jumpForce: 4
   jumpTimeLimit: 2
   groundLayer:
     serializedVersion: 2
