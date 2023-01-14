@@ -5079,12 +5079,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d0e3255f1d9dac44996ec361bb84edf, type: 3}
---- !u!20 &572895354 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1544618877, guid: 3a92a42bf4548484196716270d4b79a7,
-    type: 3}
-  m_PrefabInstance: {fileID: 3478592826606887360}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &573927218
 GameObject:
   m_ObjectHideFlags: 0
@@ -10455,7 +10449,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1057734335}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1389213932}
+        m_TargetAssemblyTypeName: Paridot.GameManager, Assembly-CSharp
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1057734335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25234,6 +25240,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1389213932 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1464220360}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19850cfbb45a5e4439f21a6897d26118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1423616064
 Mesh:
   m_ObjectHideFlags: 0
@@ -25758,11 +25776,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
         type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 867131908}
-    - target: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
-        type: 3}
       propertyPath: _UIMenu
       value: 
       objectReference: {fileID: 483612866}
@@ -25773,22 +25786,12 @@ PrefabInstance:
       objectReference: {fileID: 867131908}
     - target: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
         type: 3}
-      propertyPath: _uiMenu
+      propertyPath: _timerText
       value: 
-      objectReference: {fileID: 483612866}
+      objectReference: {fileID: 1188771507}
     - target: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
         type: 3}
       propertyPath: _UIGameplay
-      value: 
-      objectReference: {fileID: 2113020587}
-    - target: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
-        type: 3}
-      propertyPath: _deathZoneY
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779810048390601708, guid: 282e70cbff7206045a9afb1f6997374f,
-        type: 3}
-      propertyPath: _uiGameplay
       value: 
       objectReference: {fileID: 2113020587}
     - target: {fileID: 7779810048709968258, guid: 282e70cbff7206045a9afb1f6997374f,
@@ -30641,44 +30644,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 541077546, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 572895354}
-    - target: {fileID: 1544618877, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
-      propertyPath: orthographic
-      value: 0
+      propertyPath: sidePosition.z
+      value: -40
       objectReference: {fileID: 0}
-    - target: {fileID: 1544618877, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
-      propertyPath: near clip plane
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1544618877, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
-      propertyPath: orthographic size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1544618878, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
-      propertyPath: m_LocalPosition.z
+    - target: {fileID: 541077546, guid: 3a92a42bf4548484196716270d4b79a7, type: 3}
+      propertyPath: perspectivePosition.z
       value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3478592826085852215, guid: 3a92a42bf4548484196716270d4b79a7,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478592826085852216, guid: 3a92a42bf4548484196716270d4b79a7,
-        type: 3}
-      propertyPath: jumpForce
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478592826085852216, guid: 3a92a42bf4548484196716270d4b79a7,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3478592826085852216, guid: 3a92a42bf4548484196716270d4b79a7,
-        type: 3}
-      propertyPath: maxRaycastDistance
-      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3478592826085852221, guid: 3a92a42bf4548484196716270d4b79a7,
         type: 3}

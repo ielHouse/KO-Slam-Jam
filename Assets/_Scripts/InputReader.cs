@@ -38,6 +38,18 @@ namespace Paridot
             _gameInput.Menu.Disable();
         }
 
+        public void ActivateGameplay()
+        {
+            _gameInput.Gameplay.Enable();
+            _gameInput.Menu.Disable();
+        }
+        
+        public void ActivateMenu()
+        {
+            _gameInput.Menu.Enable();
+            _gameInput.Gameplay.Disable();
+        }
+
         public void OnMove(InputAction.CallbackContext context)
         {
             MoveEvent?.Invoke(context.ReadValue<Vector2>());
@@ -68,8 +80,7 @@ namespace Paridot
         {
             if (context.phase == InputActionPhase.Performed)
             {
-                _gameInput.Gameplay.Disable();
-                _gameInput.Menu.Enable();
+                ActivateMenu();
                 PauseEvent?.Invoke();
             }
         }
@@ -78,8 +89,7 @@ namespace Paridot
         {
             if (context.phase == InputActionPhase.Performed)
             {
-                _gameInput.Menu.Disable();
-                _gameInput.Gameplay.Enable();
+                ActivateGameplay();
                 ResumeEvent?.Invoke();
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Paridot
@@ -9,6 +10,7 @@ namespace Paridot
     {
         [SerializeField] private GameObject _UIGameplay;
         [SerializeField] private GameObject _UIMenu;
+        [SerializeField] private TextMeshProUGUI _timerText;
         
         [SerializeField] private GameObject _player;
         private Vector3 _startPosition;
@@ -21,6 +23,8 @@ namespace Paridot
         private bool _isTransitioning = false;
 
         private GameState _gameState;
+
+        private float _timer;
         
         public static event Action<GameState, float, float> TransitionGameEvent;
         public static event Action PlayerDeathEvent;
@@ -29,12 +33,29 @@ namespace Paridot
         private void Start()
         {
             _gameState = GameState.Perspective;
+            
+            HandlePause();
+            _timer = 120f;
 
             _input.TransitionEvent += TransitionState;
             _input.PauseEvent += HandlePause;
             _input.ResumeEvent += HandleResume;
 
             _startPosition = _player.transform.position;
+        }
+
+        public void RestartGame()
+        {
+            _timer = 120f;
+            HandleResume();
+            PlayerDeath();
+            _input.ActivateGameplay();
+        }
+
+        private void UpdateTimer()
+        {
+            _timer -= Time.deltaTime;
+            _timerText.text = (_timer).ToString();
         }
 
         private void HandleResume()
@@ -49,16 +70,22 @@ namespace Paridot
         {
             Time.timeScale = 0f;
 
-            _UIGameplay.SetActive(false);
+            // _UIGameplay.SetActive(false);
             _UIMenu.SetActive(true);
+        }
+
+        private void PlayerDeath()
+        {
+            PlayerDeathEvent?.Invoke();
+            _player.transform.position = _startPosition;
         }
 
         private void Update()
         {
+            UpdateTimer();
             if (_player.transform.position.y < _deathZoneY)
             {
-                PlayerDeathEvent?.Invoke();
-                _player.transform.position = _startPosition;
+                PlayerDeath();
             }
             
             if (_isTransitioning)
