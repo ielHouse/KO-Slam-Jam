@@ -33,6 +33,7 @@ namespace Paridot
             _input.JumpEvent += HandleJump;
             _input.JumpCancelledEvent += HandleJumpCancelled;
         }
+        
 
         private void FixedUpdate()
         {
@@ -42,6 +43,7 @@ namespace Paridot
 
         private void HandleMove(Vector2 dir)
         {
+            
             if (_gameState == GameState.Perspective)
             {
                 _moveDirection = new Vector3(dir.y, 0, -dir.x);
@@ -70,12 +72,15 @@ namespace Paridot
 
         private void Move()
         {
-            if (_moveDirection == Vector3.zero)
+            if (!IsGrounded())
             {
                 return;
             }
+            
+            Vector3 movement = _moveDirection * (moveSpeed * Time.deltaTime);
 
-            transform.position += _moveDirection * (moveSpeed * Time.deltaTime);
+            movement.y = _rb.velocity.y;
+            _rb.velocity = movement;
         }
 
         private bool IsGrounded()

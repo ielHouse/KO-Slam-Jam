@@ -12,6 +12,7 @@ namespace Paridot
         private GameInput _gameInput;
 
         public event Action<Vector2> MoveEvent;
+        public event Action MoveCancelledEvent;
         public event Action JumpEvent;
         public event Action JumpCancelledEvent;
         public event Action TransitionEvent;
