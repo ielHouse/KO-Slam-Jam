@@ -73,12 +73,13 @@ namespace Paridot
 
         private void Move()
         {
-            
             Vector3 movement = _moveDirection * (moveSpeed * Time.deltaTime);
             
             if (!IsGrounded())
             {
-                _rb.AddForce(movement*airMoveScale);
+                Vector3 force = movement - _rb.velocity;
+                force.y = 0;
+                _rb.AddForce(force * airMoveScale);
             }
             else
             {
