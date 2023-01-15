@@ -48,7 +48,6 @@ namespace Paridot
         {
             _timer = 120f;
             HandleResume();
-            PlayerDeath();
             _input.ActivateGameplay();
         }
 
@@ -77,8 +76,14 @@ namespace Paridot
         private void PlayerDeath()
         {
             PlayerDeathEvent?.Invoke();
-            _startPosition.z = _player.transform.position.z;
             _player.transform.position = _startPosition;
+            
+            if (_gameState == GameState.Side)
+            {
+                TransitionState();
+            }
+            HandlePause();
+            _input.ActivateMenu();
         }
 
         private void Update()
