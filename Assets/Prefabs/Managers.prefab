@@ -46,10 +46,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _UIGameplay: {fileID: 0}
   _UIMenu: {fileID: 0}
+  _timerText: {fileID: 0}
   _player: {fileID: 0}
+  _computerAnim: {fileID: 0}
   _deathZoneY: -10
   _input: {fileID: 11400000, guid: fc77b137a162e7946afc322056934dcf, type: 2}
   _transitionTime: 1
+  _winParticles:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &7779810048709968261
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ namespace Paridot
     {
         [SerializeField] private InputReader _input;
 
+        [SerializeField] private Animator _anim;
+
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpForce;
         [SerializeField] private float jumpTimeLimit;
@@ -18,6 +20,13 @@ namespace Paridot
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private GameObject feet;
         [SerializeField] private float maxRaycastDistance;
+
+        [SerializeField] private float _smashRadius;
+        [SerializeField] private LayerMask _computer;
+
+        public static event Action SmashedLike;
+        
+        
 
         private Rigidbody _rb;
         
@@ -33,8 +42,32 @@ namespace Paridot
             _input.MoveEvent += HandleMove;
             _input.JumpEvent += HandleJump;
             _input.JumpCancelledEvent += HandleJumpCancelled;
+            _input.SmashEvent += HandleSmash;
+
+            GameManager.PlayerDeathEvent += HandleDeath;
+            GameManager.RestartEvent += HandleRestart;
         }
-        
+
+        private void HandleSmash()
+        {
+            _anim.SetBool("SMASH", true);
+
+            if (Physics.CheckSphere(transform.position, _smashRadius, _computer))
+            {
+                SmashedLike?.Invoke();
+            }
+        }
+
+        private void HandleRestart()
+        {
+            _anim.SetBool("OoT", false);
+        }
+
+        private void HandleDeath()
+        {
+            _anim.SetBool("OoT", true);
+        }
+
 
         private void FixedUpdate()
         {
@@ -61,6 +94,8 @@ namespace Paridot
             {
                 return;
             }
+
+            _anim.SetBool("jump", true);
             _isJumping = true;
             _timeJumping = 0;
         }
@@ -68,6 +103,8 @@ namespace Paridot
         private void HandleJumpCancelled()
         {
             _isJumping = false;
+            
+            _anim.SetBool("jump", false);
         }
 
         private void Move()
@@ -84,6 +121,22 @@ namespace Paridot
             {
                 movement.y = _rb.velocity.y;
                 _rb.velocity = movement;
+                if (Vector3.Dot(_rb.velocity, Vector3.right)>0)
+                {
+                    _anim.SetBool("Level_Start", true);
+                    _anim.SetBool("beepbeepbackupsounds", false);
+                }
+                else if (Vector3.Dot(_rb.velocity, Vector3.right)<0)
+                {
+                    _anim.SetBool("Level_Start", false);
+                    _anim.SetBool("beepbeepbackupsounds", true);
+                }
+                else
+                {
+                    _anim.SetBool("Level_Start", false);
+                    _anim.SetBool("beepbeepbackupsounds", false);
+                }
+                
             }
         }
 
@@ -103,6 +156,7 @@ namespace Paridot
             if (_timeJumping >= jumpTimeLimit)
             {
                 _isJumping = false;
+                _anim.SetBool("jump", false);
                 return;
             }
 

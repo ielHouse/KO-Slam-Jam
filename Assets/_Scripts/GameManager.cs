@@ -13,14 +13,21 @@ namespace Paridot
         [SerializeField] private TextMeshProUGUI _timerText;
         
         [SerializeField] private GameObject _player;
+        [SerializeField] private Animator _computerAnim;
         private Vector3 _startPosition;
         [SerializeField] private float _deathZoneY;
         
         [SerializeField] private InputReader _input;
 
         [SerializeField] private float _transitionTime;
+
+        [SerializeField] private List<ParticleSystem> _winParticles;
+
         private float _transitioning = 0f;
         private bool _isTransitioning = false;
+
+        private bool _playerDead = false;
+        private bool _won = false;
 
         private GameState _gameState;
 
@@ -28,8 +35,17 @@ namespace Paridot
         
         public static event Action<GameState, float, float> TransitionGameEvent;
         public static event Action PlayerDeathEvent;
+        public static event Action RestartEvent;
         
 
+        private void CheckTimer()
+        {
+            if (_timer <= 0)
+            {
+                KillPlayer();
+            }
+        }
+        
         private void Start()
         {
             _gameState = GameState.Perspective;
@@ -41,11 +57,31 @@ namespace Paridot
             _input.PauseEvent += HandlePause;
             _input.ResumeEvent += HandleResume;
 
+            Player.SmashedLike += HandleSmashedLike;
+
             _startPosition = _player.transform.position;
+        }
+
+        private void HandleSmashedLike()
+        {
+            _won = true;
+            _computerAnim.SetBool("SPEED", true);
+            foreach (var particles in _winParticles)
+            {
+                particles.Play();
+            }
         }
 
         public void RestartGame()
         {
+            RestartEvent?.Invoke();
+            foreach (var particles in _winParticles)
+            {
+                particles.Stop();
+            }
+            _playerDead = false;
+            _won = false;
+            _computerAnim.SetBool("SPEED", false);
             _timer = 120f;
             HandleResume();
             _input.ActivateGameplay();
@@ -53,7 +89,10 @@ namespace Paridot
 
         private void UpdateTimer()
         {
-            _timer -= Time.deltaTime;
+            if (!_won)
+            {
+                _timer -= Time.deltaTime;
+            }
             _timerText.text = ((int)_timer).ToString();
         }
 
@@ -71,27 +110,42 @@ namespace Paridot
 
             // _UIGameplay.SetActive(false);
             _UIMenu.SetActive(true);
+            _input.ActivateMenu();
         }
 
-        private void PlayerDeath()
+        private IEnumerator PlayerDeath()
         {
             PlayerDeathEvent?.Invoke();
-            _player.transform.position = _startPosition;
+            
+            yield return new WaitForSeconds(5);
             
             if (_gameState == GameState.Side)
             {
                 TransitionState();
             }
+
             HandlePause();
-            _input.ActivateMenu();
+            _player.transform.position = _startPosition;
+        }
+
+        private void KillPlayer()
+        {
+            _playerDead = true;
+            StartCoroutine(PlayerDeath());
         }
 
         private void Update()
         {
             UpdateTimer();
-            if (_player.transform.position.y < _deathZoneY)
+
+            if (!_playerDead)
             {
-                PlayerDeath();
+                CheckTimer();
+            }
+            
+            if (_player.transform.position.y < _deathZoneY && !_playerDead)
+            {
+                KillPlayer();
             }
             
             if (_isTransitioning)

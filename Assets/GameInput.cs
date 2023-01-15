@@ -64,6 +64,15 @@ namespace Paridot
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Smash"",
+                    ""type"": ""Button"",
+                    ""id"": ""a326f0e1-b45f-47c2-8c55-5073a88ace6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -198,6 +207,17 @@ namespace Paridot
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c17b42d-4e29-4ea0-bfdd-130942e4edcb"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Smash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -249,6 +269,7 @@ namespace Paridot
             m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
             m_Gameplay_Transition = m_Gameplay.FindAction("Transition", throwIfNotFound: true);
             m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+            m_Gameplay_Smash = m_Gameplay.FindAction("Smash", throwIfNotFound: true);
             // Menu
             m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
             m_Menu_Resume = m_Menu.FindAction("Resume", throwIfNotFound: true);
@@ -315,6 +336,7 @@ namespace Paridot
         private readonly InputAction m_Gameplay_Jump;
         private readonly InputAction m_Gameplay_Transition;
         private readonly InputAction m_Gameplay_Pause;
+        private readonly InputAction m_Gameplay_Smash;
         public struct GameplayActions
         {
             private @GameInput m_Wrapper;
@@ -323,6 +345,7 @@ namespace Paridot
             public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
             public InputAction @Transition => m_Wrapper.m_Gameplay_Transition;
             public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
+            public InputAction @Smash => m_Wrapper.m_Gameplay_Smash;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -344,6 +367,9 @@ namespace Paridot
                     @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                     @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                     @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                    @Smash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSmash;
+                    @Smash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSmash;
+                    @Smash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSmash;
                 }
                 m_Wrapper.m_GameplayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -360,6 +386,9 @@ namespace Paridot
                     @Pause.started += instance.OnPause;
                     @Pause.performed += instance.OnPause;
                     @Pause.canceled += instance.OnPause;
+                    @Smash.started += instance.OnSmash;
+                    @Smash.performed += instance.OnSmash;
+                    @Smash.canceled += instance.OnSmash;
                 }
             }
         }
@@ -403,6 +432,7 @@ namespace Paridot
             void OnJump(InputAction.CallbackContext context);
             void OnTransition(InputAction.CallbackContext context);
             void OnPause(InputAction.CallbackContext context);
+            void OnSmash(InputAction.CallbackContext context);
         }
         public interface IMenuActions
         {

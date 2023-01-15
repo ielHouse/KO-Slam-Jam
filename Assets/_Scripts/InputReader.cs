@@ -17,6 +17,7 @@ namespace Paridot
         public event Action TransitionEvent;
         public event Action PauseEvent;
         public event Action ResumeEvent;
+        public event Action SmashEvent;
 
         private void OnEnable()
         {
@@ -82,6 +83,14 @@ namespace Paridot
             {
                 ActivateMenu();
                 PauseEvent?.Invoke();
+            }
+        }
+
+        public void OnSmash(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+            {
+                SmashEvent?.Invoke();
             }
         }
 

@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 541077544}
-  m_LocalRotation: {x: 0.22170353, y: 0.64432186, z: -0.20315383, w: 0.70315397}
+  m_LocalRotation: {x: 0.27059805, y: 0.6532815, z: -0.27059805, w: 0.6532815}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,7 +32,7 @@ Transform:
   - {fileID: 1544618878}
   m_Father: {fileID: 3478592826085852221}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 35, y: 85, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 90, z: 0}
 --- !u!114 &541077546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1544618877}
-  perspectiveRotation: {x: 35, y: 85, z: 0}
+  perspectiveRotation: {x: 45, y: 90, z: 0}
   sideRotation: {x: 0, y: 0, z: 0}
   perspectivePosition: {x: 0, y: 0, z: -10}
   sidePosition: {x: 0, y: 0, z: -40}
@@ -227,14 +227,14 @@ Transform:
   m_GameObject: {fileID: 3478592826085852215}
   m_LocalRotation: {x: 0, y: 0.004188755, z: 0, w: 0.9999913}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 541077545}
   - {fileID: 3087614687536615082}
   - {fileID: 2266342195682434159}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0.48, z: 0}
 --- !u!54 &3478592826085852217
 Rigidbody:
@@ -265,15 +265,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _input: {fileID: 11400000, guid: fc77b137a162e7946afc322056934dcf, type: 2}
+  _anim: {fileID: 5301729537407354389}
   moveSpeed: 400
-  jumpForce: 4
-  jumpTimeLimit: 2
-  airMoveScale: 0
+  jumpForce: 1.6
+  jumpTimeLimit: 1
+  airMoveScale: 0.315
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   feet: {fileID: 1162751715121483206}
   maxRaycastDistance: 0.2
+  _smashRadius: 5
+  _computer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!136 &6638438921508122248
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -387,6 +392,12 @@ PrefabInstance:
 --- !u!4 &2266342195682434159 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6049438895357283489, guid: 97da1f736b704ad48addfcfa011264a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5512483630885277902}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5301729537407354389 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 365847424264967899, guid: 97da1f736b704ad48addfcfa011264a4,
     type: 3}
   m_PrefabInstance: {fileID: 5512483630885277902}
   m_PrefabAsset: {fileID: 0}
