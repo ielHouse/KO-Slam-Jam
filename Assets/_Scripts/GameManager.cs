@@ -14,6 +14,7 @@ namespace Paridot
         
         [SerializeField] private GameObject _player;
         [SerializeField] private Animator _computerAnim;
+        [SerializeField] private AudioSource _computerClick;
         private Vector3 _startPosition;
         [SerializeField] private float _deathZoneY;
         
@@ -49,6 +50,8 @@ namespace Paridot
         private void Start()
         {
             _gameState = GameState.Perspective;
+
+            _computerClick = _computerAnim.transform.GetComponent<AudioSource>();
             
             HandlePause();
             _timer = 120f;
@@ -66,6 +69,10 @@ namespace Paridot
         {
             _won = true;
             _computerAnim.SetBool("SPEED", true);
+            if (!_computerClick.isPlaying)
+            {
+                _computerClick.Play();
+            }
             foreach (var particles in _winParticles)
             {
                 particles.Play();
@@ -82,7 +89,15 @@ namespace Paridot
             _playerDead = false;
             _won = false;
             _computerAnim.SetBool("SPEED", false);
+            _computerClick.Stop();
+            
+            if (_gameState == GameState.Side)
+            {
+                TransitionState();
+            }
+            
             _timer = 120f;
+            _player.transform.position = _startPosition;
             HandleResume();
             _input.ActivateGameplay();
         }
@@ -124,8 +139,8 @@ namespace Paridot
                 TransitionState();
             }
 
-            HandlePause();
             _player.transform.position = _startPosition;
+            HandlePause();
         }
 
         private void KillPlayer()

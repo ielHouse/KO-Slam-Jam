@@ -18,6 +18,7 @@ namespace Paridot
         public event Action PauseEvent;
         public event Action ResumeEvent;
         public event Action SmashEvent;
+        public event Action SmashCancelledEvent;
 
         private void OnEnable()
         {
@@ -91,6 +92,10 @@ namespace Paridot
             if (context.phase == InputActionPhase.Performed)
             {
                 SmashEvent?.Invoke();
+            }
+            if (context.phase == InputActionPhase.Canceled)
+            {
+                SmashCancelledEvent?.Invoke();
             }
         }
 

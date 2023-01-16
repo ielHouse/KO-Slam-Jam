@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,12 @@ namespace Paridot
         
         [SerializeField] private Vector3 perspectivePosition;
         [SerializeField] private Vector3 sidePosition;
-        
+
+        private void Update()
+        {
+            
+        }
+
         protected override void PerformTransition(float t)
         {
             if (_gameState == GameState.Perspective)

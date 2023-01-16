@@ -24,6 +24,8 @@ namespace Paridot
         [SerializeField] private float _smashRadius;
         [SerializeField] private LayerMask _computer;
 
+        public bool slamming = false;
+
         public static event Action SmashedLike;
         
         
@@ -43,24 +45,28 @@ namespace Paridot
             _input.JumpEvent += HandleJump;
             _input.JumpCancelledEvent += HandleJumpCancelled;
             _input.SmashEvent += HandleSmash;
+            _input.SmashCancelledEvent += HandleSmashCancelled;
 
             GameManager.PlayerDeathEvent += HandleDeath;
             GameManager.RestartEvent += HandleRestart;
         }
 
+        private void HandleSmashCancelled()
+        {
+            slamming = false;
+        }
+
         private void HandleSmash()
         {
             _anim.SetBool("SMASH", true);
-
-            if (Physics.CheckSphere(transform.position, _smashRadius, _computer))
-            {
-                SmashedLike?.Invoke();
-            }
+            slamming = true;
+            
         }
 
         private void HandleRestart()
         {
             _anim.SetBool("OoT", false);
+            
         }
 
         private void HandleDeath()
@@ -73,6 +79,17 @@ namespace Paridot
         {
             Move();
             Jump();
+        }
+
+        private void Update()
+        {
+            if (slamming)
+            {
+                if (Physics.CheckSphere(transform.position, _smashRadius, _computer))
+                {
+                    SmashedLike?.Invoke();
+                }
+            }
         }
 
         private void HandleMove(Vector2 dir)
